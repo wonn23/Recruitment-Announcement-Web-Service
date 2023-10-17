@@ -7,11 +7,7 @@ const User = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
-      },
-      lastName: {
+      name: {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
@@ -21,6 +17,10 @@ const User = (sequelize, DataTypes) => {
         unique: true,
       },
       phoneNumber: {
+        type: DataTypes.STRING(11),
+        allowNull: false,
+      },
+      address: {
         type: DataTypes.STRING(11),
         allowNull: false,
       },

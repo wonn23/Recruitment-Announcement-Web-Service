@@ -10,16 +10,14 @@ const Post = (sequelize, DataTypes) => {
       title: {
         type: DataTypes.STRING(40),
         allowNull: false,
-        unique: true,
       },
-      requirements: {
+      requirement: {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
       salary: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false,
       },
       education: {
         type: DataTypes.STRING(40),

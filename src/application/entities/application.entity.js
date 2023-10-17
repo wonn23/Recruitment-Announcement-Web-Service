@@ -8,9 +8,15 @@ const Application = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       status: {
-        type: DataTypes.STRING(5),
+        type: DataTypes.ENUM(
+          '서류 접수',
+          '서류 검토중',
+          '서류 합격',
+          '인터뷰 합격',
+          '최종 합격',
+          '불합격',
+        ),
         allowNull: false,
-        unique: true,
       },
       resume: {
         type: DataTypes.STRING(255),

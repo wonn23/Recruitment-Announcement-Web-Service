@@ -20,10 +20,9 @@ const Company = (sequelize, DataTypes) => {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
-      size: {
-        type: DataTypes.STRING(10),
+      description: {
+        type: DataTypes.STRING(1000),
         allowNull: false,
-        defaultValue: false,
       },
     },
     {
