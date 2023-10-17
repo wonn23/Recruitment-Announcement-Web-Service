@@ -16,7 +16,8 @@ const postController = {
   },
   getAllPosts: async (req, res, next) => {
     try {
-      const { message, posts } = await postService.getAllPosts();
+      const search = req.query.search;
+      const { message, posts } = await postService.getAllPosts(search);
 
       statusCode.setResponseCode200(res);
       res.send({ message, posts });

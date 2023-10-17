@@ -26,9 +26,9 @@ const postService = {
     }
   },
   // 모든 채용공고 조회
-  getAllPosts: async () => {
+  getAllPosts: async (search) => {
     try {
-      const posts = await PostModel.getAllPosts();
+      const posts = await PostModel.getAllPosts(search);
       return { message: '게시글 전체 조회를 성공했습니다.', posts };
     } catch (error) {
       if (error) {
