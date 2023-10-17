@@ -4,19 +4,16 @@ const PostModel = {
   create: async ({ newPost }) => {
     return await db.Post.create(newPost);
   },
-  getAllPosts: async ({ offset, limit }) => {
-    const { count, rows: posts } = await db.Post.findAndCountAll({
-      offset,
-      limit,
-      distinct: true,
+  getAllPosts: async () => {
+    return await db.Post.findAndCountAll({
       order: [
         ['createdAt', 'DESC'],
         ['postId', 'DESC'],
       ],
     });
-    return { total: count, posts };
+
   },
-  getPostById: async postId => {
+  getPostById: async ({ postId }) => {
     return await db.Post.findOne({
       where: { postId },
     });
@@ -27,14 +24,13 @@ const PostModel = {
     });
   },
   update: async ({ transaction, postId, fieldToUpdate, newValue }) => {
-    const updatePost = await db.Post.update(
+    return await db.Post.update(
       { [fieldToUpdate]: newValue },
       {
         where: { postId },
         transaction,
       },
     );
-    return updatePost;
   },
 };
 
