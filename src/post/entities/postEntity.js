@@ -11,6 +11,14 @@ const Post = (sequelize, DataTypes) => {
         type: DataTypes.STRING(40),
         allowNull: false,
       },
+      companyName: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
+      country: {
+        type: DataTypes.STRING(40),
+        allowNull: false,
+      },
       requirement: {
         type: DataTypes.STRING(40),
         allowNull: false,
