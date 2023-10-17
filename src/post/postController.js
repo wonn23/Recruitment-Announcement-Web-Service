@@ -3,25 +3,23 @@ import { postService } from './postService.js';
 const postController = {
   createPost: async (req, res, next) => {
     try {
-      const userId = req.currentUserId;
-      const newPost = req.body;
+      const newPostData = req.body;
 
-      const createPost = await postService.createPost({
-        userId,
-        newPost,
+      const { message, post } = await postService.createPost({
+        newPostData,
       });
       statusCode.setResponseCode201(res);
-      res.send(createPost.message);
+      res.send({ message, post });
     } catch (error) {
       next(error);
     }
   },
   getAllPosts: async (req, res, next) => {
     try {
-      const posts = await postService.getAllPosts();
+      const { message, posts } = await postService.getAllPosts();
 
       statusCode.setResponseCode200(res);
-      res.send(posts.message);
+      res.send({ message, posts });
     } catch (error) {
       next(error);
     }
@@ -29,7 +27,7 @@ const postController = {
   getPost: async (req, res, next) => {
     try {
       const postId = req.params.postId;
-      const { message, post } = await postService.getPost(postId);
+      const { message, post } = await postService.getPost({ postId });
 
       statusCode.setResponseCode200(res);
       res.send({ message, post });
@@ -52,13 +50,12 @@ const postController = {
   },
   updatePost: async (req, res, next) => {
     try {
-      const userId = req.currentUserId;
       const postId = req.params.postId;
       const toUpdate = req.body;
-      const post = await postService.updatePost({ userId, postId, toUpdate });
+      const { message, updatedPost } = await postService.updatePost({ postId, toUpdate });
 
       statusCode.setResponseCode200(res);
-      res.send(post.message);
+      res.send({ message, updatedPost });
     } catch (error) {
       next(error);
     }

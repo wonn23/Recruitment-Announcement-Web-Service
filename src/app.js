@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { db } from './db.index.js';
+import { db } from './dbIndex.js';
 import { logger } from '../src/utils/logger.js';
 import { morganMiddleware } from './utils/morgan.js';
 import { errorMiddleware } from './middlewares/errorMiddleware.js';
+import { postRouter } from './post/routers/postRouter.js';
 
 const app = express();
 
@@ -16,12 +17,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morganMiddleware);
 
 // app.use('/users', userRouter);
-// app.use('/posts', postRouter);
+app.use('/posts', postRouter);
 // app.use('/applications', applicationRouter);
 // app.use('/companies', companyRouter);
 
 db.sequelize
-  .sync({ force: true }) // true이면 테이블 모두 삭제 후 생성, false이면 테이블 그대로 유지
+  .sync({ force: false }) // true이면 테이블 모두 삭제 후 생성, false이면 테이블 그대로 유지
   .then(() => {
     logger.info('데이터베이스 연결 성공');
   })

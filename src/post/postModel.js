@@ -1,31 +1,25 @@
-import { db } from '../index.js';
+import { db } from '../dbIndex.js';
 
 const PostModel = {
-  create: async ({ newPost }) => {
-    return await db.Post.create(newPost);
+  create: async ({ newPostData }) => {
+    return await db.Post.create(newPostData);
   },
   getAllPosts: async () => {
-    return await db.Post.findAll({
-      order: [
-        ['createdAt', 'DESC'],
-        ['postId', 'DESC'],
-      ],
-    });
-
+    return await db.Post.findAll();
   },
-  getPostById: async ({ postId }) => {
+  getPostById: async (postId) => {
     return await db.Post.findByPk(postId);
   },
   delete: async postId => {
     await db.Post.destroy({
-      where: { postId },
+      where: { id: postId },
     });
   },
-  update: async ({ transaction, postId, fieldToUpdate, newValue }) => {
+  update: async ({ transaction, postId, toUpdate }) => {
     return await db.Post.update(
-      { [fieldToUpdate]: newValue },
+      { toUpdate },
       {
-        where: { postId },
+        where: { id: postId },
         transaction,
       },
     );

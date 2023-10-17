@@ -1,6 +1,6 @@
-import { PostModel } from './postModel'
+import { PostModel } from './postModel.js'
 import { UserModel } from '../user/userModel.js'
-import { db } from '../db/index.js';
+import { db } from '../dbIndex.js';
 import {
   ConflictError,
   BadRequestError,
@@ -9,18 +9,14 @@ import {
   UnauthorizedError,
 } from '../middlewares/errorMiddleware.js';
 import { checkAccess, throwNotFoundError } from '../utils/commonFunctions.js';
-import { fieldsToUpdate } from '../utils/postFunctions.js';
 
 const postService = {
   // 채용공고 생성
-  createPost: async ({ userId, newPost }) => {
+  createPost: async ({ newPostData }) => {
     try {
-      const { ...postInfo } = newPost;
-      const user = await UserModel.findById(userId);
-      throwNotFoundError(user, '유저');
+      const post = await PostModel.create({ newPostData });
 
-      const post = await PostModel.create({ newPost: { userId, ...postInfo } });
-      return post
+      return { message: '게시글 생성에 성공했습니다.', post };
     } catch (error) {
       if (error instanceof UnauthorizedError) {
         throw error;
@@ -41,7 +37,7 @@ const postService = {
     }
   },
   // 채용공고 하나 상세보기
-  getPost: async postId => {
+  getPost: async ({ postId }) => {
     try {
       const post = await PostModel.getPostById(postId);
       throwNotFoundError(post, '게시글');
@@ -51,7 +47,7 @@ const postService = {
         post,
       };
     } catch (error) {
-      if (error instanceof NotFoundError) { // 위에서 notfounderror를 던지면 이것은 안 필요할까?
+      if (error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('게시물 조회를 실패했습니다.');
@@ -76,29 +72,20 @@ const postService = {
     }
   },
   // 채용공고 수정
-  updatePost: async ({ userId, postId, toUpdate }) => {
-    const transaction = await sequelize.transaction({
+  updatePost: async ({ postId, toUpdate }) => {
+    const transaction = await db.sequelize.transaction({
       autocommit: false,
-      isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED
+      isolationLevel: db.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED
     });
     try {
       let post = await PostModel.getPostById(postId);
       throwNotFoundError(post, '게시글');
-      checkAccess(userId, post.userId, '게시글 수정');
 
-      const { ...updateValue } = toUpdate;
+      const updatedPost = await post.update(toUpdate, { transaction });
 
-      for (const [field, fieldToUpdate] of Object.entries(fieldsToUpdate)) {
-        if (toUpdate[field]) {
-          const newValue = updateValue[field]; // {"title": "수정"}
-          await PostModel.update({ postId, fieldToUpdate, newValue, transaction });
-        }
-      }
-
-      await post.save({ transaction });
       await transaction.commit();
 
-      return { message: '게시글 수정을 성공했습니다.' };
+      return { message: '게시글 수정을 성공했습니다.', updatedPost };
     } catch (error) {
       if (transaction) {
         await transaction.rollback();

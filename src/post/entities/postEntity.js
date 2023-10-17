@@ -35,6 +35,10 @@ const Post = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
+      award: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       type: {
         type: DataTypes.ENUM(
           '정규직',

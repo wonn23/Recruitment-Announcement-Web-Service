@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize';
 import { config } from './config/config.js';
-import User from './user/entities/users.entity.js'
-import Post from './post/entities/post.entity.js'
-import Company from './company/entities/company.entity.js';
-import Application from './application/entities/application.entity.js'
+import User from './user/entities/userEntity.js'
+import Post from './post/entities/postEntity.js'
+import Company from './company/entities/companyEntity.js';
+import Application from './application/entities/applicationEntity.js'
 
 const db = {};
 
