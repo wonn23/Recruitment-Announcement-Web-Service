@@ -18,10 +18,10 @@ const postController = {
   },
   getAllPosts: async (req, res, next) => {
     try {
-      const posts = await postService.getAllPosts({ page, perPage, type });
+      const posts = await postService.getAllPosts();
 
       statusCode.setResponseCode200(res);
-      res.send({ message: posts.message, allPostCount: posts.total, currentPage: page, postList: posts.posts });
+      res.send(posts.message);
     } catch (error) {
       next(error);
     }
@@ -37,12 +37,12 @@ const postController = {
       next(error);
     }
   },
-  setPost: async (req, res, next) => {
+  deletePost: async (req, res, next) => {
     try {
       const userId = req.currentUserId;
       const postId = req.params.postId;
-      const toUpdate = req.body;
-      const post = await postService.setPost({ userId, postId, toUpdate });
+
+      const post = await postService.deletePost({ userId, postId });
 
       statusCode.setResponseCode200(res);
       res.send(post.message);
@@ -50,12 +50,12 @@ const postController = {
       next(error);
     }
   },
-  deletePost: async (req, res, next) => {
+  updatePost: async (req, res, next) => {
     try {
       const userId = req.currentUserId;
       const postId = req.params.postId;
-
-      const post = await postService.deletePost({ userId, postId });
+      const toUpdate = req.body;
+      const post = await postService.updatePost({ userId, postId, toUpdate });
 
       statusCode.setResponseCode200(res);
       res.send(post.message);

@@ -5,7 +5,7 @@ const PostModel = {
     return await db.Post.create(newPost);
   },
   getAllPosts: async () => {
-    return await db.Post.findAndCountAll({
+    return await db.Post.findAll({
       order: [
         ['createdAt', 'DESC'],
         ['postId', 'DESC'],
@@ -14,9 +14,7 @@ const PostModel = {
 
   },
   getPostById: async ({ postId }) => {
-    return await db.Post.findOne({
-      where: { postId },
-    });
+    return await db.Post.findByPk(postId);
   },
   delete: async postId => {
     await db.Post.destroy({
