@@ -11,6 +11,8 @@ const PostModel = {
       [Op.or]: [
         { title: { [Op.like]: `%${search}%` } },
         { description: { [Op.like]: `%${search}%` } },
+        { position: { [Op.like]: `%${search}%` } },
+        { skill: { [Op.like]: `%${search}%` } }
       ],
     };
 
