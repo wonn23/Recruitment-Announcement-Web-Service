@@ -13,7 +13,7 @@ const Company = (sequelize, DataTypes) => {
         unique: true,
       },
       location: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
       industry: {
@@ -21,7 +21,7 @@ const Company = (sequelize, DataTypes) => {
         allowNull: false,
       },
       size: {
-        type: DataTypes.STRING(1),
+        type: DataTypes.STRING(10),
         allowNull: false,
         defaultValue: false,
       },

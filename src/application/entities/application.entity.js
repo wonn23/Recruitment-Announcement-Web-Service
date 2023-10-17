@@ -8,12 +8,12 @@ const Application = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       status: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(5),
         allowNull: false,
         unique: true,
       },
       resume: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.STRING(255),
         allowNull: false,
         unique: true,
       },

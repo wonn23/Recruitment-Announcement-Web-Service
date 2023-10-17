@@ -19,7 +19,6 @@ db.Post = Post(sequelize, Sequelize);
 db.Company = Company(sequelize, Sequelize);
 db.Application = Application(sequelize, Sequelize);
 
-
 // 각 모델들을 돌면서 모델간의 관계를 정의하는 함수를 동작시킴.
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

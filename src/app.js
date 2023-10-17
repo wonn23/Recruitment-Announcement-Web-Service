@@ -3,6 +3,7 @@ import cors from 'cors';
 import { db } from './db.index.js';
 import { logger } from '../src/utils/logger.js';
 import { morganMiddleware } from './utils/morgan.js';
+import { errorMiddleware } from './middlewares/errorMiddleware.js';
 
 const app = express();
 
@@ -33,6 +34,6 @@ app.get('/', (req, res) => {
   res.send('안녕하세요, 원티드 채용공고 API 입니다.');
 });
 
-// app.use(errorMiddleware);
+app.use(errorMiddleware);
 
 export { app };

@@ -34,9 +34,8 @@ const Post = (sequelize, DataTypes) => {
         allowNull: false,
       },
       skill: {
-        type: DataTypes.STRING(1),
+        type: DataTypes.STRING(100),
         allowNull: false,
-        defaultValue: false,
       },
       type: {
         type: DataTypes.ENUM(
@@ -46,6 +45,14 @@ const Post = (sequelize, DataTypes) => {
         ),
         allowNull: false,
       },
+      description: {
+        type: DataTypes.STRING(),
+        allowNull: false,
+      },
+      deadline: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+      }
     },
     {
       sequelize,
