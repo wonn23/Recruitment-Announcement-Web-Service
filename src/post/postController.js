@@ -1,5 +1,5 @@
 import { statusCode } from '../utils/statusCode.js';
-import { postService } from '../post/post.service.js';
+import { postService } from './postService.js';
 const postController = {
   createPost: async (req, res, next) => {
     try {

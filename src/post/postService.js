@@ -1,5 +1,5 @@
-import { PostModel } from '../post/post.model'
-import { UserModel } from '../user/users.model.js'
+import { PostModel } from './postModel'
+import { UserModel } from '../user/userModel.js'
 import { db } from '../db/index.js';
 import {
   ConflictError,
