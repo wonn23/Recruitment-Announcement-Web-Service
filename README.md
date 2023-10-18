@@ -54,16 +54,17 @@ postController.js에서 statusCode 201을 응답합니다.
 
 ```javascript
 // postService.js
-updatePost: async ({ postId, toUpdate }) => {
+  updatePost: async ({ userId, postId, toUpdate }) => {
     try {
-      let post = await PostModel.getPostById(postId);
+      const post = await PostModel.getPostById(postId);
       throwNotFoundError(post, '게시글');
+      checkAccess(post.userId, userId, '수정');
 
       const updatedPost = await post.update(toUpdate);
 
       return { message: '게시글 수정을 성공했습니다.', updatedPost };
     } catch (error) {
-      if (error instanceof ConflictError || error instanceof NotFoundError || error instanceof BadRequestError) {
+      if (error instanceof UnauthorizedError || error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('게시글 수정을 실패했습니다.');
@@ -82,7 +83,7 @@ updatePost: async ({ postId, toUpdate }) => {
 
 ```javascript
 // postService.js
-deletePost: async ({ userId, postId }) => {
+  deletePost: async ({ userId, postId }) => {
     try {
       const post = await PostModel.getPostById(postId);
       throwNotFoundError(post, '게시글');
@@ -92,7 +93,7 @@ deletePost: async ({ userId, postId }) => {
 
       return { message: '게시글 삭제를 성공했습니다.' };
     } catch (error) {
-      if (error instanceof ConflictError || error instanceof NotFoundError) {
+      if (error instanceof UnauthorizedError || error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('게시글 삭제를 실패했습니다.');
@@ -184,3 +185,34 @@ modifiedPost 담아서 return 합니다.
 상세 페이지 가져오기에 성공하면 statusCode 200을 응답합니다.
 
 ### 6. 사용자는 채용공고에 지원합니다.
+
+```javascript
+// postService.js
+submitApplication: async ({ userId, postId, newApplicationData }) => {
+    try {
+      const post = await PostModel.getPostById(postId);
+      throwNotFoundError(post, '게시글');
+
+      let application = await ApplicationModel.getPostById(postId);
+      throwFoundError(application, '지원서')
+
+      const status = newApplicationData.status
+      const resume = newApplicationData.resume
+      const dateApplied = newApplicationData.dateApplied
+
+      application = await ApplicationModel.create({ userId, postId, status, resume, dateApplied })
+
+      return { message: '해당 채용공고에 지원하였습니다.', application }
+    } catch (error) {
+      if (error instanceof ConflictError || error instanceof UnauthorizedError || error instanceof NotFoundError) {
+        throw error;
+      } else {
+        throw new InternalServerError('해당 채용공고에 지원을 실패했습니다.');
+      }
+    }
+  },
+```
+
+클라이언트에게 userId, postId를 받아서 데이터베이스에 postId를 검색해서 없으면 throwNotFoundError 실행해서 에러를 보냅니다.
+지원서에 postId를 검색해서 throwFoundError를 실행해서 해당 채용공고에 지원서가 있으면 에러를 보냅니다.
+그리고 Applicaion entity에 맞게 변수를 담아서 지원서를 생성합니다.
