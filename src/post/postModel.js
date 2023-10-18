@@ -53,12 +53,11 @@ const PostModel = {
     });
   },
   // 채용공고 수정
-  update: async ({ transaction, postId, toUpdate }) => {
+  update: async ({ postId, toUpdate }) => {
     return await db.Post.update(
       { toUpdate },
       {
         where: { id: postId },
-        transaction,
       },
     );
   },

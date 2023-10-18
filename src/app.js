@@ -16,10 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(morganMiddleware);
 
-// app.use('/users', userRouter);
 app.use('/posts', postRouter);
-// app.use('/applications', applicationRouter);
-// app.use('/companies', companyRouter);
 
 db.sequelize
   .sync({ force: false }) // true이면 테이블 모두 삭제 후 생성, false이면 테이블 그대로 유지

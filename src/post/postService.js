@@ -1,13 +1,12 @@
 import { PostModel } from './postModel.js'
 import { ApplicationModel } from '../application/applicationModel.js';
-import { db } from '../dbIndex.js';
 import {
   ConflictError,
-  BadRequestError,
   InternalServerError,
   NotFoundError,
+  UnauthorizedError
 } from '../middlewares/errorMiddleware.js';
-import { throwNotFoundError, throwFoundError } from '../utils/commonFunctions.js';
+import { checkAccess, throwNotFoundError, throwFoundError } from '../utils/commonFunctions.js';
 import { modifyPostObject } from './utils/postFunctions.js';
 
 const postService = {
@@ -23,16 +22,23 @@ const postService = {
     }
   },
   // 해당 채용공고에 지원서 제출
-  submitApplication: async ({ postId, newApplicationData }) => {
+  submitApplication: async ({ userId, postId, newApplicationData }) => {
     try {
-      let application = await ApplicationModel.getPostById(postId);
+      const post = await PostModel.getPostById(postId);
+      throwNotFoundError(post, '게시글');
 
+      let application = await ApplicationModel.getPostById(postId);
       throwFoundError(application, '지원서')
-      application = await ApplicationModel.create({ newApplicationData })
+
+      const status = newApplicationData.status
+      const resume = newApplicationData.resume
+      const dateApplied = newApplicationData.dateApplied
+
+      application = await ApplicationModel.create({ userId, postId, status, resume, dateApplied })
 
       return { message: '해당 채용공고에 지원하였습니다.', application }
     } catch (error) {
-      if (error instanceof ConflictError) {
+      if (error instanceof ConflictError || error instanceof UnauthorizedError || error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('해당 채용공고에 지원을 실패했습니다.');
@@ -81,7 +87,7 @@ const postService = {
 
       return { message: '게시글 삭제를 성공했습니다.' };
     } catch (error) {
-      if (error instanceof ConflictError || error instanceof NotFoundError) {
+      if (error instanceof UnauthorizedError || error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('게시글 삭제를 실패했습니다.');
@@ -89,26 +95,17 @@ const postService = {
     }
   },
   // 채용공고 수정
-  updatePost: async ({ postId, toUpdate }) => {
-    const transaction = await db.sequelize.transaction({
-      autocommit: false,
-      isolationLevel: db.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED
-    });
+  updatePost: async ({ userId, postId, toUpdate }) => {
     try {
-      let post = await PostModel.getPostById(postId);
+      const post = await PostModel.getPostById(postId);
       throwNotFoundError(post, '게시글');
+      checkAccess(post.userId, userId, '수정');
 
-      const updatedPost = await post.update(toUpdate, { transaction });
-
-      await post.save({ transaction });
-      await transaction.commit();
+      const updatedPost = await post.update(toUpdate);
 
       return { message: '게시글 수정을 성공했습니다.', updatedPost };
     } catch (error) {
-      if (transaction) {
-        await transaction.rollback();
-      }
-      if (error instanceof ConflictError || error instanceof NotFoundError || error instanceof BadRequestError) {
+      if (error instanceof UnauthorizedError || error instanceof NotFoundError) {
         throw error;
       } else {
         throw new InternalServerError('게시글 수정을 실패했습니다.');

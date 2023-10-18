@@ -21,7 +21,6 @@ const Application = (sequelize, DataTypes) => {
       resume: {
         type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true,
       },
       dateApplied: {
         type: DataTypes.DATEONLY,

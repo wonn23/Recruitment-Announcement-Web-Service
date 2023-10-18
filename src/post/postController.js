@@ -14,10 +14,11 @@ const postController = {
   },
   submitApplication: async (req, res, next) => {
     try {
+      const userId = req.body.userId
       const postId = req.params.postId;
       const newApplicationData = req.body;
 
-      const { message, application } = await postService.submitApplication({ postId, newApplicationData });
+      const { message, application } = await postService.submitApplication({ userId, postId, newApplicationData });
       statusCode.setResponseCode201(res);
       res.send({ message, application })
     } catch (error) {
@@ -61,9 +62,10 @@ const postController = {
   },
   updatePost: async (req, res, next) => {
     try {
+      const userId = req.currentUserId
       const postId = req.params.postId;
       const toUpdate = req.body;
-      const { message, updatedPost } = await postService.updatePost({ postId, toUpdate });
+      const { message, updatedPost } = await postService.updatePost({ userId, postId, toUpdate });
 
       statusCode.setResponseCode200(res);
       res.send({ message, updatedPost });

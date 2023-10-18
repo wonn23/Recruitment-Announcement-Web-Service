@@ -1,4 +1,4 @@
-import { ConflictError, NotFoundError } from '../middlewares/errorMiddleware.js';
+import { ConflictError, NotFoundError, UnauthorizedError } from '../middlewares/errorMiddleware.js';
 
 function throwNotFoundError(item, itemName) {
   if (!item) {
@@ -14,7 +14,7 @@ function throwFoundError(item, itemName) {
 
 function checkAccess(userId, targetUserId, accessType) {
   if (userId !== targetUserId) {
-    throw new ConflictError(`${accessType} 권한이 없습니다.`);
+    throw new UnauthorizedError(`${accessType} 권한이 없습니다.`);
   }
 }
 
