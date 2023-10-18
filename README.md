@@ -7,10 +7,10 @@
 그래서 user 폴더 내에 user와 관련된 controller, service, model 파일을 생성하여 유지, 보수에 편리하도록 구성했습니다.
 
 **Before:**
-![디렉토리 구조 전](wanted-before-directory.PNG)
+![디렉토리 구조 전](./docs/wanted-before-directory.PNG)
 
 **After:**
-![디렉토리 구조 후](wanted-after-directory.PNG)
+![디렉토리 구조 후](./docs/wanted-after-directory.PNG)
 
 ## ERD 작성
 
