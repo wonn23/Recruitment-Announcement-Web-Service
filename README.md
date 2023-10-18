@@ -10,7 +10,42 @@
 ![디렉토리 구조 전](./docs/wanted-before-directory.PNG)
 
 **After:**
-![디렉토리 구조 후](./docs/wanted-after-directory.PNG)
+📦src
+┣ 📂application
+┃ ┣ 📂entities
+┃ ┃ ┗ 📜applicationEntity.js
+┃ ┗ 📜applicationModel.js
+┣ 📂company
+┃ ┗ 📂entities
+┃ ┃ ┗ 📜companyEntity.js
+┣ 📂config
+┃ ┗ 📜config.js
+┣ 📂middlewares
+┃ ┗ 📜errorMiddleware.js
+┣ 📂post
+┃ ┣ 📂entities
+┃ ┃ ┗ 📜postEntity.js
+┃ ┣ 📂routers
+┃ ┃ ┗ 📜postRouter.js
+┃ ┣ 📂test
+┃ ┃ ┗ 📜postService.test.js
+┃ ┣ 📂utils
+┃ ┃ ┗ 📜postFunctions.js
+┃ ┣ 📂validations
+┃ ┃ ┗ 📜validations.js
+┃ ┣ 📜postController.js
+┃ ┣ 📜postModel.js
+┃ ┗ 📜postService.js
+┣ 📂user
+┃ ┗ 📂entities
+┃ ┃ ┗ 📜userEntity.js
+┣ 📂utils
+┃ ┣ 📜commonFunctions.js
+┃ ┣ 📜logger.js
+┃ ┣ 📜morgan.js
+┃ ┗ 📜statusCode.js
+┣ 📜app.js
+┗ 📜dbIndex.js
 
 ## ERD 작성
 
