@@ -21,17 +21,12 @@ const User = (sequelize, DataTypes) => {
         allowNull: false,
       },
       address: {
-        type: DataTypes.STRING(11),
+        type: DataTypes.STRING(40),
         allowNull: false,
       },
       birthday: {
         type: DataTypes.DATEONLY,
         allowNull: false,
-      },
-      isDeleted: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
       },
     },
     {
