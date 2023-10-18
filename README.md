@@ -12,6 +12,7 @@
 
 **After:**
 
+```
 📦src
 ┣ 📂application
 ┃ ┣ 📂entities
@@ -48,6 +49,7 @@
 ┃ ┗ 📜statusCode.js
 ┣ 📜app.js
 ┗ 📜dbIndex.js
+```
 
 ## ERD 작성
 
