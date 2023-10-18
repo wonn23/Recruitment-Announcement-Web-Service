@@ -7,6 +7,9 @@ const postRouter = Router();
 // 게시글 작성
 postRouter.post('/', postController.createPost);
 
+// 채용 공고 지원
+postRouter.post('/:postId/application', postController.submitApplication);
+
 // 전체 게시글 조회
 postRouter.get('/', postController.getAllPosts);
 

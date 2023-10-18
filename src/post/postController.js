@@ -5,11 +5,21 @@ const postController = {
     try {
       const newPostData = req.body;
 
-      const { message, post } = await postService.createPost({
-        newPostData,
-      });
+      const { message, post } = await postService.createPost({ newPostData });
       statusCode.setResponseCode201(res);
       res.send({ message, post });
+    } catch (error) {
+      next(error);
+    }
+  },
+  submitApplication: async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      const newApplicationData = req.body;
+
+      const { message, application } = await postService.submitApplication({ postId, newApplicationData });
+      statusCode.setResponseCode201(res);
+      res.send({ message, application })
     } catch (error) {
       next(error);
     }
